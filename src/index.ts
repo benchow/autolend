@@ -35,13 +35,19 @@ async function main() {
     })
     // console.log(collectionsSorted)
 
-    // const selectedCollection = collections.find( collection => collection.name.indexOf('Solana Monkey Business') >= 0) ?? collections[0]
-    const selectedCollection = collections[0]
-    console.log(selectedCollection)
+    const selectedCollection = collections.find( collection => collection.name.indexOf('Solana Monkey Business') >= 0) ?? collections[0]
+    // const selectedCollection = collections[0]
+    // console.log(selectedCollection)
 
-    const loans = await sdk.fetchCollectionLoans(new PublicKey(selectedCollection.id));
+    // const loans = await sdk.fetchCollectionLoans(new PublicKey(selectedCollection.id));
     // const loans = await sdk.fetchCollectionLoans(new PublicKey(selectedCollection.id), Status.WaitingForLender);
-    console.log(loans)
+    // const loans = await sdk.fetchCollectionLoans(new PublicKey(selectedCollection.id), Status.WaitingForBorrower);
+    // console.log(loans)
+
+    collectionsSorted.slice(0,25).forEach( async (c,i) => {
+      const loans = await sdk.fetchCollectionLoans(new PublicKey(selectedCollection.id), Status.WaitingForBorrower);
+      if (loans.length > 0) console.log(`${c.name} - ${loans.length} loans looking for borrower`)
+    })
 
   } catch(e) {
     console.log(`EXCEPTION: ${e}`)
